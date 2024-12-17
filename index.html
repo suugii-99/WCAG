@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tillgängliga Komponenter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Modal -->
+    <button id="openModalBtn">Öppna Modal</button>
+    <div id="modalBackdrop"></div>
+    <div
+      id="accessibleModal"
+      role="dialog"
+      aria-labelledby="modalTitle"
+      aria-hidden="true"
+    >
+      <h2 id="modalTitle">Exempel på Modal</h2>
+      <p>Detta är ett enkelt modalfönster.</p>
+      <button id="closeModalBtn">Stäng</button>
+    </div>
+
+    <!-- Hamburgarmeny -->
+    <button id="menuButton" aria-expanded="false" aria-controls="menuContent">
+      Meny
+    </button>
+    <nav id="menuContent" role="menu">
+      <a href="#" role="menuitem">Hem</a>
+      <a href="#" role="menuitem">Om oss</a>
+      <a href="#" role="menuitem">Tjänster</a>
+      <a href="#" role="menuitem">Kontakt</a>
+    </nav>
+
+    <script>
+      // Modal
+      const openModalBtn = document.getElementById("openModalBtn");
+      const closeModalBtn = document.getElementById("closeModalBtn");
+      const modal = document.getElementById("accessibleModal");
+      const backdrop = document.getElementById("modalBackdrop");
+
+      openModalBtn.addEventListener("click", () => {
+        modal.style.display = "block";
+        backdrop.style.display = "block";
+        modal.setAttribute("aria-hidden", "false");
+        closeModalBtn.focus();
+      });
+
+      closeModalBtn.addEventListener("click", closeModal);
+      backdrop.addEventListener("click", closeModal);
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.style.display === "block") {
+          closeModal();
+        }
+      });
+
+      function closeModal() {
+        modal.style.display = "none";
+        backdrop.style.display = "none";
+        modal.setAttribute("aria-hidden", "true");
+        openModalBtn.focus();
+      }
+
+      // Hamburgarmeny
+      const menuButton = document.getElementById("menuButton");
+      const menuContent = document.getElementById("menuContent");
+      let menuOpen = false;
+
+      menuButton.addEventListener("click", () => {
+        menuOpen = !menuOpen;
+        menuContent.style.display = menuOpen ? "block" : "none";
+        menuButton.setAttribute("aria-expanded", menuOpen.toString());
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && menuOpen) {
+          menuOpen = false;
+          menuContent.style.display = "none";
+          menuButton.setAttribute("aria-expanded", "false");
+          menuButton.focus();
+        }
+      });
+    </script>
+  </body>
+</html>
